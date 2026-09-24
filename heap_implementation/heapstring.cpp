@@ -23,9 +23,8 @@ void read(char* buf, int size)
 
 Mystring::Mystring() //Think about implementing something about length. 
 {
-	//So the primary benefit of utilizing the heap is that we can determine the size at somepoint other than compile time.
-
-	str_array = new char[max_length];
+	//I need to delete this thing somewhere.
+	str_array = new char[1];
     str_array[0] = '\0';
 }
 
@@ -33,6 +32,9 @@ Mystring::Mystring() //Think about implementing something about length.
 // Copy Constructor
 Mystring::Mystring(const Mystring& str)
 {
+	str_array = new char[sizeof(str)];
+	
+	//This is going to cause problems maybe - we have a const pointer trying to get a mutatable one/
     const char* str_ptr = str.str_array;
     int count = 0;
     for(;*str_ptr != '\0' && count <= max_length; ++str_ptr)
@@ -46,6 +48,7 @@ Mystring::Mystring(const Mystring& str)
 
 Mystring::Mystring(const char a[])
 {
+	str_array = new char[sizeof(a)];
     const char* str_ptr = a;
     int count = 0;
     for(;*str_ptr != '\0' && count <= max_length ; ++str_ptr)
@@ -57,8 +60,10 @@ Mystring::Mystring(const char a[])
 }
 
 
-Mystring& Mystring::operator=(const Mystring& a) //we're altering the lhs and not the rhs
+Mystring& Mystring::operator=(const Mystring& a) 
 {
+	//So we want *this to be the same size as a
+	str_array = new char[sizeof(a)];
 
     const char* str_ptr = a.str_array;
     int count = 0;
@@ -164,7 +169,6 @@ size_t Mystring::length() const
     }
     return count;
 }
-
 std::ostream& Mystring::print(std::ostream& os)
 {
     char* p = str_array;
@@ -182,4 +186,3 @@ std::ostream& operator<<(std::ostream& os, Mystring rhs)
 
     return os;
 }
-

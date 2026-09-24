@@ -13,7 +13,7 @@ public:
     Mystring(const Mystring& str);
     Mystring(const char a[]);
 
-    Mystring& operator=(const Mystring& a);
+	    Mystring& operator=(const Mystring& a);
 
     char operator[](std::size_t i) const;
 
@@ -23,11 +23,11 @@ public:
     Mystring operator+(const Mystring& rhs) const;
     Mystring& operator+=(const Mystring& rhs);
 
+	//print declaration 
+	std::ostream& print(std::ostream& os);
     std::size_t length() const;
 
-    std::ostream& print(std::ostream& os);
 
-    //There's most definitly a way to make this private and maybe do a getter for it. I need this private :(
     static constexpr std::size_t max_length{100};
 	char* str_array;
 private:

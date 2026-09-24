@@ -4,13 +4,11 @@
 
 using namespace gmc_string;
 
-//We want it to live as long as we use the string objects.
-//I need to find a way to automate this testing shit.
-//TODO Spaceship operator.
 
 TEST_CASE( "string construction - default" ) {
 	Mystring a;
 	REQUIRE(a.str_array[0] == '\0');
+	REQUIRE(a.length() == 0);
 }
 TEST_CASE( "string construction - Mystring" ) {
 // Char array
@@ -45,21 +43,96 @@ REQUIRE(b.str_array[8] == 'r');
 REQUIRE(b.str_array[9] == 'l');
 REQUIRE(b.str_array[10] == 'd');
 REQUIRE(b.str_array[11] == '\0');
-/*
-	//Over the 100 length. This test is specifically for the c style array example. With the heap stuff we won't need to worry about this I don't think.
-	Mystring long_test("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised thanks to these sheets and more recently with desktop publishing software like Aldus PageMaker and Microsoft Word including versions of Lorem Ipsum. Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose injected humour and the like.")
-	REQUIRE(b.str_array[100] == '\0')
+}
 
-	Mystring c(1234);
-	REQUIRE(b.str_array[0] == '1' && b.str_array[1] == '2' &&b.str_array[2] == '3' && b.str_array[3] == '4' &&b.str_array[4] == '\0');
+TEST_CASE("empty c string construction")
+{
+	Mystring a("");
+	REQUIRE(a.str_array[0] == '\0');
+	REQUIRE(a.length() == 0);
+}
 
-	Mystring num_double(1.23456789);
-	REQUIRE(b.str_array[0] == '1' && b.str_array[1] == '.' &&b.str_array[2] == '2' && b.str_array[3] == '3' &&b.str_array[4] == '4'&&b.str_array[5] == '5' &&b.str_array[6] == '6' &&b.str_array[7] == '7'&&b.str_array[8] == '8' &&b.str_array[9] == '9');
+TEST_CASE("one character construction")
+{
+	Mystring a("A");
+	REQUIRE(a[0] == 'A');
+	REQUIRE(a[1] == '\0');
+	REQUIRE(a.length() == 1);
+}
+//Does it include spaces?
+//
+TEST_CASE("space construction")
+{
+	Mystring a("Hello World");
+	REQUIRE(a[5] == ',');
+	REQUIRE(a[6] == ' ');
+	REQUIRE(a.length() == 13);
+}
 
-	Mystring d("Hello ");
-	Mystring e(d + "World");
-	REQUIRE(e.str_array[0] == 'H' && e.str_array[1] == 'e' &&e.str_array[2] == 'l' && e.str_array[3] == 'l' &&e.str_array[4] == 'o' &&e.str_array[5] == ' ' && e.str_array[6] == 'W' &&e.str_array[7] == 'o' &&e.str_array[8] == 'r' &&e.str_array[9] == 'l' &&e.str_array[10] == 'd' && e.str_array[11] == '\0' );
-*/
+//Copy construction additional test
+TEST_CASE("copy construction")
+{
+	Mystring a("Hello World");
+	Mystring b(a);
+
+	REQUIRE(a == b);
+	REQUIRE(a.length() == b.length());
+}
+
+//Seperate strings - like if we did copy construction can I alter one without the other?
+TEST_CASE("seperate strings")
+{
+	Mystring a("Hello World");
+	Mystring b(a);
+
+	b.str_array[0] = 'J';
+
+	REQUIRE(a[0] == 'H');
+	REQUIRE(b[0] == 'J');
+}
+
+//Emptry CC
+TEST_CASE("Empty CC")
+{
+	Mystring a("");
+	Mystring b(a);
+
+	REQUIRE(b.length() == 0);
+	REQUIRE(b[0] == '\0');
 }
 
 
+TEST_CASE("simple copy string =")
+{
+	Mystring a("Sup");
+	Mystring b;
+	
+	b = a;
+	REQUIRE(a==b);
+}
+TEST_CASE("ASSIGNMENT WORKS ")
+{
+	Mystring a("Apple");
+	Mystring b("Bad);
+
+	b = a;
+
+	REQUIRE(b == Mystring("Apple");
+	REQUIRE(b.length() == 5);
+}
+TEST_CASE("from empty string")
+{
+	Mystring a("Sup");
+	Mystring b("");
+	a = b;
+
+	REQUIRE(a[0] == '\0');
+	REQUIRE(a.length() == 0);
+}
+TEST_CASE("Self Assignment")
+{
+	Mystring a("Sup");
+	a = a;
+	REQUIRE (a == Mystring("Sup"));
+	REQUIRE(a.length() == 3);
+}
