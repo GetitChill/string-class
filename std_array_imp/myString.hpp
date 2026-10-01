@@ -36,7 +36,7 @@ private:
 };
 void read(char* buf, int size);
 
-std::ostream& operator<<(std::ostream& os, const Mystring& rh);
+std::ostream& operator<<(std::ostream& os, Mystring& rh);
 }
 
 

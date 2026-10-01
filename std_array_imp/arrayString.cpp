@@ -173,7 +173,7 @@ std::ostream& Mystring::print(std::ostream& os)
     return os;
 }
 
-std::ostream& operator<<(std::ostream& os, Mystring rhs)
+std::ostream& operator<<(std::ostream& os,Mystring rhs)
 {
     rhs.print(os);
 
