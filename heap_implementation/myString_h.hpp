@@ -10,6 +10,7 @@ class Mystring
 {
 public:
     Mystring();
+	~Mystring();
     Mystring(const Mystring& str);
     Mystring(const char a[]);
 
@@ -36,6 +37,6 @@ private:
 };
 void read(char* buf, int size);
 
-std::ostream& operator<<(std::ostream& os, const Mystring& rh);
+std::ostream& operator<<(std::ostream& os, Mystring& rhs);
 }
 

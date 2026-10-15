@@ -1,6 +1,7 @@
-#include "/home/grant/Desktop/string/std_array_imp/myString.hpp"
+//#include "/home/grant/Desktop/string/std_array_imp/myString.hpp"
+#include "/home/grant/Desktop/string/heap_implementation/myString_h.hpp"
 #include <catch2/catch_test_macros.hpp>
-
+#include <cstring>
 
 using namespace gmc_string;
 
@@ -72,8 +73,8 @@ TEST_CASE("one character construction")
 TEST_CASE("space construction")
 {
 	Mystring a("Hello World");
-	REQUIRE(a[6] == ' ');
-	REQUIRE(a.length() == 13);
+	REQUIRE(a[5] == ' ');
+	REQUIRE(a.length() == 11);
 }
 
 //Copy construction additional test
@@ -371,4 +372,11 @@ TEST_CASE("nums inside string")
 
 //Long string test - whenever you get to it
 
+TEST_CASE("strlen function test - to make sure it's doing what I think it's doing.")
+{
+	//This is going to add a null terminator to the end.
+	const char a[] = "Hello World";
+	REQUIRE(sizeof(*a) * strlen(a) == 11);
 
+
+}

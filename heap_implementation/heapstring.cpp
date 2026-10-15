@@ -5,6 +5,7 @@
 #include <cassert>
 #include <array>
 #include <iostream>
+#include <cstring>
 
 //Now we have to make some tests to make sure this thing passes.
 
@@ -28,30 +29,36 @@ Mystring::Mystring() //Think about implementing something about length.
     str_array[0] = '\0';
 }
 
+Mystring::~Mystring()
+{
+	delete[] str_array;
+}
 
 // Copy Constructor
+
 Mystring::Mystring(const Mystring& str)
 {
-	str_array = new char[sizeof(str)];
-	
-	//This is going to cause problems maybe - we have a const pointer trying to get a mutatable one/
+	str_array = new char[strlen(str.str_array) + 1];	
     const char* str_ptr = str.str_array;
-    int count = 0;
-    for(;*str_ptr != '\0' && count <= max_length; ++str_ptr)
+
+	int count = 0;
+    for(;*str_ptr != '\0'; ++str_ptr)
     {
         str_array[count] = *str_ptr;
         ++count;
     }
+
     str_array[count] = '\0';
 }
 
 
 Mystring::Mystring(const char a[])
 {
-	str_array = new char[sizeof(a)];
+	//We will need to multiply the length of the string here I think.
+	str_array = new char[sizeof(*a) * (strlen(a) + 1)]; 
     const char* str_ptr = a;
     int count = 0;
-    for(;*str_ptr != '\0' && count <= max_length ; ++str_ptr)
+    for(;*str_ptr != '\0'; ++str_ptr)
     {
         str_array[count] = *str_ptr;
         ++count;
@@ -63,18 +70,15 @@ Mystring::Mystring(const char a[])
 Mystring& Mystring::operator=(const Mystring& a) 
 {
 	//So we want *this to be the same size as a
-	str_array = new char[sizeof(a)];
+	//there may be a previous allocation from the default, so we need to free that then allocate again
+	char* new_str_array = new char[strlen(a.str_array) + 1];
+	std::strcpy(new_str_array, a.str_array);
 
-    const char* str_ptr = a.str_array;
-    int count = 0;
-    for(;*str_ptr != '\0' && count <= max_length; ++str_ptr)
-    {
-        str_array[count] = *str_ptr;
-        ++count;
-    }
+	delete[] str_array;
+	str_array = new_str_array;
 
-    //The *this-> syntax shit is trippy.
-    str_array[count] = '\0';
+
+	
     return *this;
 }
 
@@ -180,9 +184,12 @@ std::ostream& Mystring::print(std::ostream& os)
     return os;
 }
 
-std::ostream& operator<<(std::ostream& os, Mystring rhs)
+std::ostream& operator<<(std::ostream& os, Mystring& rhs)
 {
     rhs.print(os);
 
     return os;
 }
+
+
+
