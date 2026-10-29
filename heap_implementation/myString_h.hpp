@@ -31,11 +31,13 @@ public:
 
     static constexpr std::size_t max_length{100};
 	char* str_array;
+
+
+
 private:
 
 
 };
-void read(char* buf, int size);
 
 std::ostream& operator<<(std::ostream& os, Mystring& rhs);
 }

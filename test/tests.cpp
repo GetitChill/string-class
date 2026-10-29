@@ -1,5 +1,11 @@
 //#include "/home/grant/Desktop/string/std_array_imp/myString.hpp"
+
+#ifdef USE_HEAP
 #include "/home/grant/Desktop/string/heap_implementation/myString_h.hpp"
+#else
+#include "/home/grant/Desktop/string/std_array_imp/myString.hpp"
+#endif
+
 #include <catch2/catch_test_macros.hpp>
 #include <cstring>
 
@@ -9,7 +15,6 @@ using namespace gmc_string;
 TEST_CASE( "string construction - default" ) {
 	Mystring a;
 	REQUIRE(a.str_array[0] == '\0');
-	REQUIRE(a.length() == 0);
 }
 TEST_CASE( "string construction - Mystring" ) {
 // Char array

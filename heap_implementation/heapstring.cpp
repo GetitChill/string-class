@@ -4,29 +4,17 @@
 #include <iostream>
 #include <cassert>
 #include <array>
-#include <iostream>
 #include <cstring>
 
 //Now we have to make some tests to make sure this thing passes.
 
 
 using namespace gmc_string;
-void read(char* buf, int size)
-{
-    char* max_p = buf + size;
-
-	for(char c = getchar(); c != '\n' && buf <= max_p - 1; c = getchar(), ++buf)
-	{
-		*buf = c;
-	}
-	*buf = 0;
-}
 
 Mystring::Mystring() //Think about implementing something about length. 
 {
-	//I need to delete this thing somewhere.
 	str_array = new char[1];
-    str_array[0] = '\0';
+	str_array[0] = '\0';
 }
 
 Mystring::~Mystring()
@@ -39,31 +27,16 @@ Mystring::~Mystring()
 Mystring::Mystring(const Mystring& str)
 {
 	str_array = new char[strlen(str.str_array) + 1];	
-    const char* str_ptr = str.str_array;
+	std::strcpy(str_array, str.str_array);
 
-	int count = 0;
-    for(;*str_ptr != '\0'; ++str_ptr)
-    {
-        str_array[count] = *str_ptr;
-        ++count;
-    }
-
-    str_array[count] = '\0';
 }
-
 
 Mystring::Mystring(const char a[])
 {
 	//We will need to multiply the length of the string here I think.
-	str_array = new char[sizeof(*a) * (strlen(a) + 1)]; 
-    const char* str_ptr = a;
-    int count = 0;
-    for(;*str_ptr != '\0'; ++str_ptr)
-    {
-        str_array[count] = *str_ptr;
-        ++count;
-    }
-    str_array[count] = '\0';
+	str_array = new char[(strlen(a) + 1)];
+
+	std::strcpy(str_array,a);
 }
 
 
@@ -127,20 +100,14 @@ bool Mystring::operator!=(const Mystring& rhs) const
 Mystring Mystring::operator+(const Mystring& rhs) const
 {
     Mystring final_result;
-    const char* p = str_array;
-    char* final_pointer = final_result.str_array;
-    for(;*p != '\0'; ++p,++final_pointer)
-    {
-        *final_pointer = *p;
-    }
-    //Now we want to add the right side.
-    const char* sp = rhs.str_array;
-    for(;*sp != '\0'; ++sp,++final_pointer)
-    {
-        *final_pointer = *sp;
-    }
-    *(final_pointer)= '\0';
-    return Mystring(final_result);
+    
+	delete[] final_result.str_array;
+	final_result.str_array = new char[length() + rhs.length() + 1];
+
+	std::strcpy(final_result.str_array, str_array);
+	std::strcat(final_result.str_array, rhs.str_array);
+
+	return final_result;
 }
 
 Mystring& Mystring::operator+=(const Mystring& rhs)

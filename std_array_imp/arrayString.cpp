@@ -10,16 +10,6 @@
 
 
 using namespace gmc_string;
-void read(char* buf, int size)
-{
-    char* max_p = buf + size;
-
-	for(char c = getchar(); c != '\n' && buf <= max_p - 1; c = getchar(), ++buf)
-	{
-		*buf = c;
-	}
-	*buf = 0;
-}
 
 Mystring::Mystring()
 {
