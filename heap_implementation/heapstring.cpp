@@ -73,7 +73,7 @@ bool Mystring::operator==(const Mystring& rhs) const
 
 bool Mystring::operator!=(const Mystring& rhs) const
 {
-    return (*this == rhs)
+    return (*this == rhs);
 }
 
 Mystring Mystring::operator+(const Mystring& rhs) const
