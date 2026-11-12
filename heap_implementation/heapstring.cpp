@@ -1,6 +1,5 @@
 #include "myString_h.hpp"
 
-
 #include <iostream>
 #include <cassert>
 #include <array>
@@ -67,34 +66,14 @@ bool Mystring::operator==(const Mystring& rhs) const
     //We need to have two pointers to each and literally just check/loop through each
     const char* lhs_pointer = str_array;
     const char* rhs_pointer = rhs.str_array;
-    if (length() == rhs.length())
-    {
-        for(;*lhs_pointer != '\0' || *rhs_pointer != '\0'; ++lhs_pointer, ++rhs_pointer)
-        {
-            if (*lhs_pointer != *rhs_pointer )
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+	
+	return (std::strcmp(lhs_pointer, rhs_pointer));
 }
 
 
 bool Mystring::operator!=(const Mystring& rhs) const
 {
-    if (*this == rhs)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+    return (*this == rhs)
 }
 
 Mystring Mystring::operator+(const Mystring& rhs) const
@@ -140,9 +119,9 @@ size_t Mystring::length() const
     }
     return count;
 }
-std::ostream& Mystring::print(std::ostream& os)
+std::ostream& Mystring::print(std::ostream& os) const
 {
-    char* p = str_array;
+    const char* p = str_array;
     for(;*p != '\0' ; ++p)
     {
         os << *p;

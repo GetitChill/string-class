@@ -21,13 +21,7 @@ Mystring::Mystring()
 Mystring::Mystring(const Mystring& str)
 {
     const char* str_ptr = str.str_array.data();
-    int count = 0;
-    for(;*str_ptr != '\0' && count <= max_length; ++str_ptr)
-    {
-        str_array[count] = *str_ptr;
-        ++count;
-    }
-    str_array[count] = '\0';
+	std::strcpy(str_array.data(), str_ptr);
 }
 
 
@@ -35,28 +29,19 @@ Mystring::Mystring(const char a[])
 {
     const char* str_ptr = a;
     int count = 0;
-    for(;*str_ptr != '\0' && count <= max_length ; ++str_ptr)
-    {
-        str_array[count] = *str_ptr;
-        ++count;
-    }
-    str_array[count] = '\0';
+    
+	if(strlen(str_array.data())>strlen(a))
+	{
+		std::strcpy(str_array.data(),a);
+	}
 }
 
 
 Mystring& Mystring::operator=(const Mystring& a) //we're altering the lhs and not the rhs
 {
-
+	//so we're just putting the chars from a into object
     const char* str_ptr = a.str_array.data();
-    int count = 0;
-    for(;*str_ptr != '\0' && count <= max_length; ++str_ptr)
-    {
-        str_array[count] = *str_ptr;
-        ++count;
-    }
-
-    //The *this-> syntax shit is trippy.
-    str_array[count] = '\0';
+	std::strcpy(str_array.data(), str_ptr);
     return *this;
 }
 
@@ -72,34 +57,14 @@ bool Mystring::operator==(const Mystring& rhs) const
     //We need to have two pointers to each and literally just check/loop through each
     const char* lhs_pointer = str_array.data();
     const char* rhs_pointer = rhs.str_array.data();
-    if (length() == rhs.length())
-    {
-        for(;*lhs_pointer != '\0' || *rhs_pointer != '\0'; ++lhs_pointer, ++rhs_pointer)
-        {
-            if (*lhs_pointer != *rhs_pointer )
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+	//strcmp returns 0 for true
+	return !(std::strcmp(lhs_pointer, rhs_pointer));
 }
 
 
 bool Mystring::operator!=(const Mystring& rhs) const
 {
-    if (*this == rhs)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+	return (*this == rhs);
 }
 
 Mystring Mystring::operator+(const Mystring& rhs) const
@@ -107,18 +72,13 @@ Mystring Mystring::operator+(const Mystring& rhs) const
     Mystring final_result;
     const char* p = str_array.data();
     char* final_pointer = final_result.str_array.data();
-    for(;*p != '\0'; ++p,++final_pointer)
-    {
-        *final_pointer = *p;
-    }
-    //Now we want to add the right side.
+	std::strcat(final_pointer, p);
+
+	//Now we want to add the right side.
     const char* sp = rhs.str_array.data();
-    for(;*sp != '\0'; ++sp,++final_pointer)
-    {
-        *final_pointer = *sp;
-    }
-    *(final_pointer)= '\0';
-    return Mystring(final_result);
+	std::strcat(final_pointer,sp);
+
+	return Mystring(final_result);
 }
 
 Mystring& Mystring::operator+=(const Mystring& rhs)
@@ -152,9 +112,9 @@ size_t Mystring::length() const
     return count;
 }
 
-std::ostream& Mystring::print(std::ostream& os)
+std::ostream& Mystring::print(std::ostream& os) const 
 {
-    char* p = str_array.data();
+    const char* p = str_array.data();
     for(;*p != '\0' ; ++p)
     {
         os << *p;

@@ -25,7 +25,7 @@ public:
     Mystring& operator+=(const Mystring& rhs);
 
 	//print declaration 
-	std::ostream& print(std::ostream& os);
+	std::ostream& print(std::ostream& os) const;
     std::size_t length() const;
 
 

@@ -3,7 +3,7 @@
 #include <array>
 #include <cstddef>
 #include <iostream>
-
+#include <cstring>
 namespace gmc_string
 {
 class Mystring
@@ -25,7 +25,7 @@ public:
 
     std::size_t length() const;
 
-    std::ostream& print(std::ostream& os);
+    std::ostream& print(std::ostream& os) const;
 
     //There's most definitly a way to make this private and maybe do a getter for it. I need this private :(
     static constexpr std::size_t max_length{100};
